@@ -1,0 +1,49 @@
+{
+	"name": "ds_adls_watermark",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_gen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "watermark.json",
+				"folderPath": "metadata",
+				"fileSystem": "bronze"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"dh_transactions": {
+					"type": "object",
+					"properties": {
+						"last_day": {
+							"type": "string"
+						}
+					}
+				},
+				"dh_product_lookup": {
+					"type": "object",
+					"properties": {
+						"last_full_load": {
+							"type": "string"
+						}
+					}
+				},
+				"dh_causal_lookup": {
+					"type": "object",
+					"properties": {
+						"last_week": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

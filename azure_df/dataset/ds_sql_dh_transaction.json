@@ -1,0 +1,44 @@
+{
+	"name": "ds_sql_dh_transaction",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_on_prem_sql_server",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "upc",
+				"type": "varchar"
+			},
+			{
+				"name": "store",
+				"type": "nvarchar"
+			},
+			{
+				"name": "week",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "feature_desc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "display_desc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "geography",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dh_transactions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
