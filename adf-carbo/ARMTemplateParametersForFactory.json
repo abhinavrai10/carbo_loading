@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-carbo"
+		},
+		"ls_adls_gen2_accountKey": {
+			"value": ""
+		},
+		"ls_databricks_accessToken": {
+			"value": ""
+		},
+		"ls_on_prem_sql_server_password": {
+			"value": ""
+		},
+		"ls_adls_gen2_properties_typeProperties_url": {
+			"value": "https://storagecarbo.dfs.core.windows.net/"
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"value": "0301-122243-ucy4o150"
+		},
+		"ls_on_prem_sql_server_properties_typeProperties_server": {
+			"value": "DESKTOP-RJ02047\\SQLEXPRESS"
+		},
+		"ls_on_prem_sql_server_properties_typeProperties_database": {
+			"value": "CarboLoadingDB"
+		},
+		"ls_on_prem_sql_server_properties_typeProperties_userName": {
+			"value": "carbo"
+		}
+	}
+}
