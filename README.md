@@ -90,11 +90,11 @@ This design supports fast, flexible querying to answer the business questions ef
   - **Dimensions**: Generate surrogate keys (e.g., `ROW_NUMBER()` for `ProductKey`) and populate tables like `TimeDim`, `ProductDim`.
   - **Facts**: Join `dh_transactions` with dimensions, replacing natural keys with surrogate keys to build `SalesFact`.
   - Store results as Delta tables in `/gold`.
-
-![ADF-pipelines](docs/ADF-pipelines.PNG)
  
 ## Results
 - **Problem Solved**: Transformed 5M+ raw transactions into an analytics-ready star schema, enabling insights into sales trends, coupon usage, and customer behavior.
 - **Efficiency**: Incremental loads ensure only new data is processed, reducing runtime and costs.
 - **Scalability**: Azure and Delta Lake handle large datasets with ease.
 - **Stability**: Hash-based `transaction_key` ensures consistent updates across runs.
+
+![ADF-pipelines](docs/ADF-pipelines.PNG)
