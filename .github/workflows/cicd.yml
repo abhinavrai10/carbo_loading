@@ -48,12 +48,16 @@ jobs:
       run: |
         echo "Logging into Azure"
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" --output none
+    - name: Copy Template Without Linked Service
+      run: |
+        echo "Creating modified ARM template without linked service"
+        jq 'del(.resources[] | select(.type == "Microsoft.DataFactory/factories/linkedservices" and .name == "[concat(parameters(\"factoryName\"), \"/ls_on_prem_sql_server\")]"))' ./adf-carbo/ARMTemplateForFactory.json > ./adf-carbo/ARMTemplateForFactory_temp.json
     - name: Deploy ADF
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: 2da1eaa1-70c6-4d3c-8534-816bf3f969e2
         resourceGroupName: rg-carbo
-        template: ./adf-carbo/ARMTemplateForFactory.json
+        template: ./adf-carbo/ARMTemplateForFactory_temp.json
         parameters: ./adf-carbo/ARMTemplateParametersForFactory.json factoryName=adf-carbo-uat
         deploymentMode: Incremental
       env:
