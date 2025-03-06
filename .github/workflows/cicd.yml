@@ -48,7 +48,7 @@ jobs:
         resourceGroupName: rg-carbo
         template: ./adf-carbo/ARMTemplateForFactory.json
         parameters: ./adf-carbo/ARMTemplateParametersForFactory.json
-        deploymentMode: Complete  # Force full replacement
+        deploymentMode: Incremental  # Changed to Incremental
       env:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
