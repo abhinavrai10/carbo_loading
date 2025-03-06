@@ -8,37 +8,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Install Databricks CLI
+      run: |
+        echo "Installing Databricks CLI"
+        pip install databricks-cli
+    - name: Configure Databricks CLI
+      run: |
+        echo "Configuring Databricks CLI"
+        echo "[DEFAULT]" > ~/.databrickscfg
+        echo "host = https://adb-2081951158852644.4.azuredatabricks.net" >> ~/.databrickscfg
+        echo "token = ${{ secrets.DATABRICKS_TOKEN }}" >> ~/.databrickscfg
     - name: Deploy Databricks Notebooks
       run: |
         echo "Starting Databricks deployment to /carbo-loading-UAT"
         for file in "Databricks Notebooks"/*; do
-          echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
-          if [[ "$file" == *.ipynb ]]; then
-            curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
-              -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-              -F "path=/carbo-loading-UAT/$(basename "$file")" \
-              -F "format=JUPYTER" \
-              -F "overwrite=true" \
-              -F "content=$(base64 "$file")" 2>&1 | tee output.txt
-            if grep -q "error_code" output.txt; then
-              echo "Failed to deploy $file: $(cat output.txt)"
-            else
-              echo "Successfully deployed $file"
-            fi
-          elif [[ "$file" == *.py ]]; then
-            curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
-              -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-              -F "path=/carbo-loading-UAT/$(basename "$file")" \
-              -F "format=SOURCE" \
-              -F "content=$(base64 "$file")" 2>&1 | tee output.txt
-            if grep -q "error_code" output.txt; then
-              echo "Failed to deploy $file: $(cat output.txt)"
-            else
-              echo "Successfully deployed $file"
-            fi
+          if [[ "$file" == *.ipynb || "$file" == *.py ]]; then
+            echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
+            databricks workspace import -f AUTO "$file" "/carbo-loading-UAT/$(basename "$file")" --overwrite || echo "Failed to deploy $file"
           else
             echo "Skipping $file - unsupported extension"
-            continue
           fi
         done
         echo "Databricks deployment completed"
