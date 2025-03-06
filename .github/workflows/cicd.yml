@@ -36,9 +36,13 @@ jobs:
     - name: Login to Azure
       run: |
         echo "Logging into Azure"
-        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}"
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" --output none
+    - name: Create ADF Parameters File
+      run: |
+        echo "Creating parameters JSON"
+        echo '{"factoryName": {"value": "adf-carbo-uat"}}' > adf_parameters.json
     - name: Deploy ADF
       run: |
         echo "Running ADF deployment to adf-carbo-uat"
-        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters @adf_parameters.json --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         echo "ADF deployment completed"
