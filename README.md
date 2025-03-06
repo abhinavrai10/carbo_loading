@@ -99,6 +99,7 @@ This design supports fast, flexible querying to answer the business questions ef
 
 ![ADF-pipelines](docs/ADF-pipelines.PNG)
 
+---
 
 ## CI/CD Pipeline
 
