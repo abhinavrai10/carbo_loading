@@ -22,9 +22,12 @@ jobs:
       run: |
         echo "Starting Databricks deployment to /carbo-loading-UAT"
         for file in "Databricks Notebooks"/*; do
-          if [[ "$file" == *.ipynb || "$file" == *.py ]]; then
+          if [[ "$file" == *.ipynb ]]; then
             echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
-            databricks workspace import -f AUTO "$file" "/carbo-loading-UAT/$(basename "$file")" --overwrite || echo "Failed to deploy $file"
+            databricks workspace import --format JUPYTER --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
+          elif [[ "$file" == *.py ]]; then
+            echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
+            databricks workspace import --format SOURCE --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
           else
             echo "Skipping $file - unsupported extension"
           fi
