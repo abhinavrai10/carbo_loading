@@ -24,10 +24,10 @@ jobs:
         for file in "Databricks Notebooks"/*; do
           if [[ "$file" == *.ipynb ]]; then
             echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
-            databricks workspace import --format JUPYTER --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
+            databricks workspace import --format JUPYTER --language PYTHON --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
           elif [[ "$file" == *.py ]]; then
             echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
-            databricks workspace import --format SOURCE --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
+            databricks workspace import --format SOURCE --language PYTHON --overwrite "$file" "/carbo-loading-UAT/$(basename "$file")" || echo "Failed to deploy $file"
           else
             echo "Skipping $file - unsupported extension"
           fi
