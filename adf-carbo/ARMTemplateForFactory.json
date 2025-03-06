@@ -1259,15 +1259,9 @@
 						"type": "SecureString",
 						"value": "[parameters('ls_on_prem_sql_server_password')]"
 					}
-				},
-				"connectVia": {
-					"referenceName": "SHIR",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SHIR')]",
