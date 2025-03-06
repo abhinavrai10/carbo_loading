@@ -43,7 +43,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         resourceGroupName: rg-carbo
         template: ./adf-carbo/ARMTemplateForFactory.json
-        parameters: 'factoryName=adf-carbo-uat'
+        parameters: '{"factoryName": {"value": "adf-carbo-uat"}}'
       env:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
