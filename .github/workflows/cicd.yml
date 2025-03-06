@@ -19,14 +19,23 @@ jobs:
               -F "path=/carbo-loading-UAT/$(basename "$file")" \
               -F "format=JUPYTER" \
               -F "overwrite=true" \
-              -F "content=$(base64 "$file")" || echo "Failed to deploy $file"
+              -F "content=$(base64 "$file")" 2>&1 | tee output.txt
+            if grep -q "error_code" output.txt; then
+              echo "Failed to deploy $file: $(cat output.txt)"
+            else
+              echo "Successfully deployed $file"
+            fi
           elif [[ "$file" == *.py ]]; then
             curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
               -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-              -H "Content-Type: application/octet-stream" \
-              --data-binary "@$file" \
-              -d "path=/carbo-loading-UAT/$(basename "$file")" \
-              -d "format=SOURCE" || echo "Failed to deploy $file"
+              -F "path=/carbo-loading-UAT/$(basename "$file")" \
+              -F "format=SOURCE" \
+              -F "content=$(base64 "$file")" 2>&1 | tee output.txt
+            if grep -q "error_code" output.txt; then
+              echo "Failed to deploy $file: $(cat output.txt)"
+            else
+              echo "Successfully deployed $file"
+            fi
           else
             echo "Skipping $file - unsupported extension"
             continue
