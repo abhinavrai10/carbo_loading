@@ -1,0 +1,9 @@
+{
+	"name": "adf-carbo",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "de8d3d8b-8fa1-4343-937c-06624e7d78cc",
+		"tenantId": "b0203bb4-c713-42d1-8f67-d5d4dfea5edf"
+	}
+}
