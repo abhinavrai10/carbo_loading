@@ -39,14 +39,18 @@ jobs:
       run: |
         echo "Starting ADF deployment to adf-carbo-uat"
         echo "Deploying ARM template from adf-carbo/ARMTemplateForFactory.json"
-    - name: Deploy ADF
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: rg-carbo
-        template: ./adf-carbo/ARMTemplateForFactory.json
-        parameters: 'factoryName=adf-carbo-uat'
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Install Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - name: Login to Azure
+      run: |
+        echo "Logging into Azure with service principal"
+        az login --service-principal -u "$(echo $AZURE_CREDENTIALS | jq -r '.clientId')" -p "$(echo $AZURE_CREDENTIALS | jq -r '.clientSecret')" --tenant "$(echo $AZURE_CREDENTIALS | jq -r '.tenantId')"
+    - name: Deploy ADF with az cli
+      run: |
+        echo "Running ARM deployment"
+        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription 2da1eaa1-70c6-4d3c-8534-816bf3f969e2
+        echo "ARM deployment completed"
     - name: Echo ADF Deployment Complete
       run: |
         echo "ADF deployment completed"
