@@ -16,7 +16,7 @@ jobs:
           if [[ "$file" == *.ipynb ]]; then
             FORMAT="JUPYTER"
           elif [[ "$file" == *.py ]]; then
-            FORMAT="PYTHON"
+            FORMAT="SOURCE"
           else
             echo "Skipping $file - unsupported extension"
             continue
@@ -25,6 +25,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
             -F "path=/carbo-loading-UAT/$(basename "$file")" \
             -F "format=$FORMAT" \
+            -F "overwrite=true" \
             -F "content=$(base64 "$file")" || echo "Failed to deploy $file"
         done
         echo "Databricks deployment completed"
