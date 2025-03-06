@@ -28,8 +28,7 @@ jobs:
   deploy-adf:
     runs-on: ubuntu-latest
     needs: deploy-databricks
-    if: always() || contains(github.event.head_commit.modified, 'adf-carbo/') || github.event_name == 'workflow_dispatch'
-    steps:
+    steps:  # Removed if condition to always run
     - uses: actions/checkout@v3
       with:
         ref: adf_publish
@@ -48,7 +47,7 @@ jobs:
         resourceGroupName: rg-carbo
         template: ./adf-carbo/ARMTemplateForFactory.json
         parameters: ./adf-carbo/ARMTemplateParametersForFactory.json
-        deploymentMode: Incremental  # Changed to Incremental
+        deploymentMode: Incremental
       env:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
