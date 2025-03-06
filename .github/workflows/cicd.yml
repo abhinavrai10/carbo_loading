@@ -29,31 +29,20 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: adf_publish
-    - name: Install jq
-      run: sudo apt-get install -y jq
     - name: Debug Azure Context
       run: |
-        echo "Client ID: ${{ secrets.AZURE_CLIENT_ID }}"
-        echo "Client Secret: ${{ secrets.AZURE_CLIENT_SECRET }}"
-        echo "Tenant ID: ${{ secrets.AZURE_TENANT_ID }}"
         echo "Subscription ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
         echo "Resource Group: rg-carbo"
-    - name: Echo ADF Deployment Start
-      run: |
-        echo "Starting ADF deployment to adf-carbo-uat"
-        echo "Deploying ARM template from adf-carbo/ARMTemplateForFactory.json"
     - name: Install Azure CLI
       run: |
+        echo "Installing Azure CLI"
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - name: Login to Azure
       run: |
-        echo "Logging into Azure with service principal"
+        echo "Logging into Azure"
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}"
-    - name: Deploy ADF with az cli
+    - name: Deploy ADF
       run: |
-        echo "Running ARM deployment"
-        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        echo "ARM deployment completed"
-    - name: Echo ADF Deployment Complete
-      run: |
+        echo "Running ADF deployment to adf-carbo-uat"
+        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters '{"factoryName":{"value":"adf-carbo-uat"}}' --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         echo "ADF deployment completed"
