@@ -33,10 +33,10 @@ jobs:
       run: sudo apt-get install -y jq
     - name: Debug Azure Context
       run: |
-        echo "Client ID: $(echo $AZURE_CREDENTIALS | jq -r '.clientId')"
-        echo "Client Secret: $(echo $AZURE_CREDENTIALS | jq -r '.clientSecret')"
-        echo "Tenant ID: $(echo $AZURE_CREDENTIALS | jq -r '.tenantId')"
-        echo "Subscription ID: $(echo $AZURE_CREDENTIALS | jq -r '.subscriptionId')"
+        echo "Client ID: ${{ secrets.AZURE_CLIENT_ID }}"
+        echo "Client Secret: ${{ secrets.AZURE_CLIENT_SECRET }}"
+        echo "Tenant ID: ${{ secrets.AZURE_TENANT_ID }}"
+        echo "Subscription ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
         echo "Resource Group: rg-carbo"
     - name: Echo ADF Deployment Start
       run: |
@@ -48,11 +48,11 @@ jobs:
     - name: Login to Azure
       run: |
         echo "Logging into Azure with service principal"
-        az login --service-principal -u "$(echo $AZURE_CREDENTIALS | jq -r '.clientId')" -p "$(echo $AZURE_CREDENTIALS | jq -r '.clientSecret')" --tenant "$(echo $AZURE_CREDENTIALS | jq -r '.tenantId')"
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}"
     - name: Deploy ADF with az cli
       run: |
         echo "Running ARM deployment"
-        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription 2da1eaa1-70c6-4d3c-8534-816bf3f969e2
+        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         echo "ARM deployment completed"
     - name: Echo ADF Deployment Complete
       run: |
