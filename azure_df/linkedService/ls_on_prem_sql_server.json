@@ -11,11 +11,7 @@
 			"trustServerCertificate": false,
 			"authenticationType": "SQL",
 			"userName": "carbo",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZjMwYzhkMi01ZDAyLTQ2Y2EtYTY3OC02N2I2OTdhMDQ4ZTQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
-		},
-		"connectVia": {
-			"referenceName": "SHIR",
-			"type": "IntegrationRuntimeReference"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDVBMkE1MTRCLTgwNjAtNEJCNi1CM0ZBLTkzRTk3ODUyMzc2OV9hMmI0NzBmOS1kM2JiLTRmNmMtOWM0OS1jYTZkYmJlOTMzMGEiDQp9"
 		}
 	}
 }
