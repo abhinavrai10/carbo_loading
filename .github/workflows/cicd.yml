@@ -33,7 +33,10 @@ jobs:
       run: sudo apt-get install -y jq
     - name: Debug Azure Context
       run: |
-        echo "Subscription ID from AZURE_CREDENTIALS: $(echo $AZURE_CREDENTIALS | jq -r '.subscriptionId')"
+        echo "Client ID: $(echo $AZURE_CREDENTIALS | jq -r '.clientId')"
+        echo "Client Secret: $(echo $AZURE_CREDENTIALS | jq -r '.clientSecret')"
+        echo "Tenant ID: $(echo $AZURE_CREDENTIALS | jq -r '.tenantId')"
+        echo "Subscription ID: $(echo $AZURE_CREDENTIALS | jq -r '.subscriptionId')"
         echo "Resource Group: rg-carbo"
     - name: Echo ADF Deployment Start
       run: |
