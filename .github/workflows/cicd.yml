@@ -29,9 +29,11 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: adf_publish
+    - name: Install jq
+      run: sudo apt-get install -y jq
     - name: Debug Azure Context
       run: |
-        echo "Subscription ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+        echo "Subscription ID from AZURE_CREDENTIALS: $(echo $AZURE_CREDENTIALS | jq -r '.subscriptionId')"
         echo "Resource Group: rg-carbo"
     - name: Echo ADF Deployment Start
       run: |
