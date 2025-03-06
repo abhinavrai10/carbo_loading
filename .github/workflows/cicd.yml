@@ -14,19 +14,22 @@ jobs:
         for file in "Databricks Notebooks"/*; do
           echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
           if [[ "$file" == *.ipynb ]]; then
-            FORMAT="JUPYTER"
+            curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
+              -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
+              -F "path=/carbo-loading-UAT/$(basename "$file")" \
+              -F "format=JUPYTER" \
+              -F "overwrite=true" \
+              -F "content=$(base64 "$file")" || echo "Failed to deploy $file"
           elif [[ "$file" == *.py ]]; then
-            FORMAT="SOURCE"
+            curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
+              -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
+              -F "path=/carbo-loading-UAT/$(basename "$file")" \
+              -F "format=SOURCE" \
+              -F "content=$(base64 "$file")" || echo "Failed to deploy $file"
           else
             echo "Skipping $file - unsupported extension"
             continue
           fi
-          curl -v -n -X POST https://adb-2081951158852644.4.azuredatabricks.net/api/2.0/workspace/import \
-            -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-            -F "path=/carbo-loading-UAT/$(basename "$file")" \
-            -F "format=$FORMAT" \
-            -F "overwrite=true" \
-            -F "content=$(base64 "$file")" || echo "Failed to deploy $file"
         done
         echo "Databricks deployment completed"
   deploy-adf:
