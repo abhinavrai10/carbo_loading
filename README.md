@@ -1,3 +1,18 @@
+# Index
+
+1. [Retail Analytics Pipeline Overview](#retail-analytics-pipeline-from-oltp-to-star-schema-in-a-lakehouse)
+2. [Problem Statement](#problem-statement)
+3. [Solution Overview](#solution-overview)
+4. [Star Schema Design](#star-schema-design)
+5. [Implementation](#implementation)
+   - [Data Ingestion (Bronze Layer)](#1-data-ingestion-bronze-layer)
+   - [Data Cleaning (Silver Layer)](#2-data-cleaning-silver-layer)
+   - [Star Schema Creation (Gold Layer)](#3-star-schema-creation-gold-layer)
+6. [Results](#results)
+7. [CI/CD Pipeline](#cicd-pipeline)
+
+---
+
 # Retail Analytics Pipeline: From OLTP to Star Schema in a Lakehouse
 
 This project showcases a robust data engineering pipeline that transforms raw transactional data from an OLTP system into a star schema optimized for retail analytics. Leveraging **SQL Server Management Studio (SSMS)** as the source, **Azure Data Factory (ADF)** for data orchestration, and **Azure Databricks** for transformation, it builds a scalable lakehouse architecture using a medallion structure (Bronze, Silver, Gold layers). The dataset, sourced from dunnhumby’s **Carbo-Loading** dataset, includes household-level transactions for products like pasta, pasta sauce, syrup, and pancake mix.
