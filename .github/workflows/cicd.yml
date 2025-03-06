@@ -29,20 +29,14 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: adf_publish
-    - name: Install Azure CLI
-      run: |
-        echo "Installing Azure CLI"
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    - name: Login to Azure
-      run: |
-        echo "Logging into Azure"
-        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" --output none
-    - name: Create ADF Parameters File
-      run: |
-        echo "Creating parameters JSON"
-        echo '{"factoryName": {"value": "adf-carbo-uat"}}' > adf_parameters.json
     - name: Deploy ADF
-      run: |
-        echo "Running ADF deployment to adf-carbo-uat"
-        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters @adf_parameters.json --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        echo "ADF deployment completed"
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: rg-carbo
+        template: ./adf-carbo/ARMTemplateForFactory.json
+        parameters: 'factoryName=adf-carbo-uat'
+      env:
+        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
