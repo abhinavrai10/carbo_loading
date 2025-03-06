@@ -54,7 +54,7 @@ jobs:
         subscriptionId: 2da1eaa1-70c6-4d3c-8534-816bf3f969e2
         resourceGroupName: rg-carbo
         template: ./adf-carbo/ARMTemplateForFactory.json
-        parameters: ./adf-carbo/ARMTemplateParametersForFactory.json
+        parameters: ./adf-carbo/ARMTemplateParametersForFactory.json factoryName=adf-carbo-uat
         deploymentMode: Incremental
       env:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
