@@ -98,3 +98,12 @@ This design supports fast, flexible querying to answer the business questions ef
 - **Stability**: Hash-based `transaction_key` ensures consistent updates across runs.
 
 ![ADF-pipelines](docs/ADF-pipelines.PNG)
+
+
+## CI/CD Pipeline
+
+This project uses GitHub Actions to automate CI/CD for Azure Data Factory (ADF) and Azure Databricks.
+- **CI:** Validates and packages code on every push to `main`. The workflow ensures Databricks notebooks (`.ipynb` and `.py`) and ADF ARM templates are ready for deployment by checking out the repository and preparing the necessary tools (Databricks CLI and Azure CLI).
+- **CD:** Deploys to `adf-carbo-uat` (ADF UAT instance) and `ws-carbo` (Databricks workspace). The pipeline pushes notebooks to the `/carbo-loading-UAT` folder in Databricks and updates ADF pipelines in `adf-carbo-uat` using an ARM template with an overridden `factoryName`.
+
+Check the [Actions tab](https://github.com/abhinavrai10/carbo_loading/actions) to see it live!
