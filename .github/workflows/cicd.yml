@@ -29,10 +29,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: adf_publish
-    - name: Debug Azure Context
-      run: |
-        echo "Subscription ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-        echo "Resource Group: rg-carbo"
     - name: Install Azure CLI
       run: |
         echo "Installing Azure CLI"
@@ -44,5 +40,5 @@ jobs:
     - name: Deploy ADF
       run: |
         echo "Running ADF deployment to adf-carbo-uat"
-        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters '{"factoryName":{"value":"adf-carbo-uat"}}' --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        az deployment group create --resource-group rg-carbo --template-file ./adf-carbo/ARMTemplateForFactory.json --parameters factoryName=adf-carbo-uat --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         echo "ADF deployment completed"
