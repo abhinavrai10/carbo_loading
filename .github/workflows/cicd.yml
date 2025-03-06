@@ -13,10 +13,15 @@ jobs:
         echo "Starting Databricks deployment to /carbo-loading-UAT"
         for file in "Databricks Notebooks"/*; do
           echo "Deploying $file to /carbo-loading-UAT/$(basename "$file")"
+          if [[ "$file" == *.ipynb ]]; then
+            FORMAT="JUPYTER"
+          else
+            FORMAT="SOURCE"
+          fi
           curl -n -X POST https://${{ secrets.DATABRICKS_HOST }}/api/2.0/workspace/import \
             -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
             -F "path=/carbo-loading-UAT/$(basename "$file")" \
-            -F "format=SOURCE" \
+            -F "format=$FORMAT" \
             -F "content=$(base64 "$file")"
         done
         echo "Databricks deployment completed"
@@ -43,6 +48,7 @@ jobs:
         resourceGroupName: rg-carbo
         template: ./adf-carbo/ARMTemplateForFactory.json
         parameters: ./adf-carbo/ARMTemplateParametersForFactory.json
+        deploymentMode: Complete  # Force full replacement
       env:
         AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
